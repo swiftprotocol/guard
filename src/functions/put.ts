@@ -1,4 +1,4 @@
-import { getAccount } from "src/helpers/wallet.js";
+import { getAccount } from "../helpers/wallet.js";
 import { RECIPIENT } from "../constants.js";
 import { encrypt } from "../helpers/encrypt.js";
 

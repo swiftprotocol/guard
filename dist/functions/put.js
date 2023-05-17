@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getAccount } from "src/helpers/wallet.js";
+import { getAccount } from "../helpers/wallet.js";
 import { RECIPIENT } from "../constants.js";
 import { encrypt } from "../helpers/encrypt.js";
 export default function put(key, value, namespace) {
