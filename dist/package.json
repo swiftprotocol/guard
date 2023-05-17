@@ -1,0 +1,23 @@
+{
+	"name": "@swiftprotocol/guard",
+	"version": "0.1.0",
+	"type": "module",
+	"description": "Wallet-Based Data Protection API",
+	"main": "index.js",
+	"types": "index.d.ts",
+	"authors": [
+		"Josef Leventon <josef@swiftprotocol.zone>"
+	],
+	"engines": {
+		"npm": ">=7.0.0",
+		"node": ">=16.16.0"
+	},
+	"dependencies": {
+		"@keplr-wallet/types": "^0.11.63",
+		"@peculiar/webcrypto": "^1.4.0",
+		"axios": "1.3.4",
+		"crypto": "^1.0.1",
+		"elliptic": "^6.5.4",
+		"pg": "^8.11.0"
+	}
+}

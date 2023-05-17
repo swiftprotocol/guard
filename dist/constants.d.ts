@@ -1,0 +1,1 @@
+export declare const RECIPIENT = "03a1921f68144f0da6ced1932d0b2e83218147c14c264b368c7a48ece752dd490e";
