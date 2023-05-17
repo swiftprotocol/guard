@@ -1,6 +1,6 @@
 import { StdTx } from "@keplr-wallet/types";
 import axios from "axios";
-import { getAccount } from "src/helpers/wallet";
+import { getAccount } from "../helpers/wallet.js";
 
 export default async function get(key: string, namespace?: string) {
   const account = await getAccount();
