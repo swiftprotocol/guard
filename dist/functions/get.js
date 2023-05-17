@@ -30,8 +30,7 @@ export default function get(key, namespace) {
             signatures: [sig],
         };
         const result = yield axios
-            .post(this.api +
-            `/retrieve/${account.address}/${namespace ? namespace + "/" : ""}${key}+${account.address}`, {
+            .post(this.api + `/retrieve/${account.address}/${key}`, {
             type: "address",
             msg,
         })

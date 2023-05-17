@@ -30,16 +30,10 @@ export default async function get(key: string, namespace?: string) {
   };
 
   const result = await axios
-    .post(
-      this.api +
-        `/retrieve/${account.address}/${
-          namespace ? namespace + "/" : ""
-        }${key}+${account.address}`,
-      {
-        type: "address",
-        msg,
-      }
-    )
+    .post(this.api + `/retrieve/${account.address}/${key}`, {
+      type: "address",
+      msg,
+    })
     .then((res) => {
       return res.data;
     })
