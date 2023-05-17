@@ -3,7 +3,7 @@
   <h1 align='center'>Guard by Swift Protocol</h1>
   <h3 align='center'>Wallet-Based Data Protection API</h3>
   <p align='center'> Guard provides encryption APIs and tooling to allow web2/3 developers to build secure UI/UX.</p>
-  <p align='center'> Support: <a href="mailto:josef@swiftprotocol.zone">josef@swiftprotocol.zone</a>/p>
+  <p align='center'> Support: <a href="mailto:josef@swiftprotocol.zone">josef@swiftprotocol.zone</a></p>
 </div>
 
 ## Installation
