@@ -1,2 +1,2 @@
-export const RECIPIENT = "03a1921f68144f0da6ced1932d0b2e83218147c14c264b368c7a48ece752dd490e";
+export const RECIPIENT = "41be027085f22602b04a577e3a28dea32ba528b06da47e95bfd78df1ca37ce72581aa2234c0dfcc1adb8c15b8cd228b916939f6797ea331040c833c7f405bf6b";
 //# sourceMappingURL=constants.js.map

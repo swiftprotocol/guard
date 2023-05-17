@@ -1,2 +1,2 @@
-/// <reference types="node" />
-export declare function getPublicKey(): Promise<Buffer>;
+export declare function getAccount(): Promise<import("@keplr-wallet/types").AccountData>;
+export declare function getPublicKey(): Promise<string>;

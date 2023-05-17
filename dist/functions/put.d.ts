@@ -1,1 +1,1 @@
-export default function put(key: string, value: string): Promise<void>;
+export default function put(key: string, value: string, namespace?: string): Promise<void>;

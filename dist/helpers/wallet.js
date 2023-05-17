@@ -7,14 +7,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+export function getAccount() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!window.wallet)
+            throw new Error("Keplr/Leap not installed");
+        const offlineSigner = window.wallet.getOfflineSigner("juno-1");
+        const accounts = yield offlineSigner.getAccounts();
+        return accounts[0];
+    });
+}
 export function getPublicKey() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!window.wallet)
-            throw new Error('Keplr/Leap not installed');
-        const offlineSigner = window.wallet.getOfflineSigner('juno-1');
+            throw new Error("Keplr/Leap not installed");
+        const offlineSigner = window.wallet.getOfflineSigner("juno-1");
         const accounts = yield offlineSigner.getAccounts();
-        const publicKey = Buffer.from(accounts[0].pubkey.buffer);
-        return publicKey;
+        const pubKey = Buffer.from(accounts[0].pubkey.buffer).toString("hex");
+        return pubKey;
     });
 }
 //# sourceMappingURL=wallet.js.map

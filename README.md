@@ -1,5 +1,5 @@
 <div align='center'>
-  <img src='https://i.ibb.co/hKFMhZz/Selfguard-Swift-1x.png'>
+  <img src='https://i.ibb.co/CMgNKpT/Selfguard-Swift-1x.png'>
   <h1 align='center'>Guard by Swift Protocol</h1>
   <h3 align='center'>Wallet-Based Data Protection API</h3>
   <p align='center'> Guard provides encryption APIs and tooling to allow web2/3 developers to build secure UI/UX.</p>
@@ -25,14 +25,13 @@ import Guard from "@swiftprotocol/guard";
 This instantiates Guard such that data encrypted with it can only be decrypted by the Swift Encryption Master agent.
 
 ```javascript
-let sg = new Guard({
-  db: {
-    // PostgreSQL database connection info
-    // ...
-  },
-  api_key: API_KEY,
+let guard = new Guard({
+  api: "https://guard.swiftprotocol.zone",
+  wallet: "keplr",
 });
 ```
+
+`wallet` can be either `keplr` or `leap`, depending on the browser wallet API you are using.
 
 ## Encrypted Key/Value Storage
 
@@ -41,13 +40,13 @@ let sg = new Guard({
 Allows you to store any key value data where the value is encrypted.
 
 ```javascript
-await sg.put("key", "value");
+await guard.put("key", "value");
 ```
 
-### Get
+### Get [TODO]
 
-Allows you to retrieve key value data where the value is decrypted upon retrieval
+Allows you to retrieve key value data where the value is decrypted upon retrieval.
 
 ```javascript
-await sg.get("key");
+await guard.get("key");
 ```

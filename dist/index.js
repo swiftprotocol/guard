@@ -8,10 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from "axios";
+import put from "./functions/put.js";
+import get from "./functions/get.js";
 export default class Guard {
-    constructor({ api, wallet }) {
+    constructor({ api, wallet, namespace }) {
         this.api = api;
         this.wallet = wallet;
+        this.defaultNamespace = namespace;
         switch (this.wallet) {
             case "keplr":
                 if ("keplr" in window)
@@ -23,10 +26,20 @@ export default class Guard {
                 break;
         }
     }
+    put(key, value, namespace) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield put.call(this, key, value, namespace || this.defaultNamespace);
+        });
+    }
+    get(key, namespace) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield get.call(this, key, namespace || this.defaultNamespace);
+        });
+    }
     query(q, values) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = yield axios
-                .post(this.api, {
+                .post(this.api + "/sql", {
                 query: q,
                 values,
             }, {

@@ -7,15 +7,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { RECIPIENT } from "src/constants";
-import { encrypt } from "src/helpers/encrypt";
-export default function put(key, value) {
+import { getAccount } from "src/helpers/wallet.js";
+import { RECIPIENT } from "../constants.js";
+import { encrypt } from "../helpers/encrypt.js";
+export default function put(key, value, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { value: encryptedValue, symmkey } = yield encrypt({
+        const account = yield getAccount();
+        const encryptedValue = yield encrypt({
             data: value,
             recipientPubKey: RECIPIENT,
         });
-        yield this.query(`INSERT INTO key_value (key, value, symmkey) VALUES ('${key}', '${encryptedValue}', '${symmkey}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, symmkey = EXCLUDED.symmkey;`);
+        yield this.query(`INSERT INTO key_value (key, value) VALUES ('${namespace ? namespace + "/" : ""}${key}+${account.address}', '${encryptedValue}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;`);
     });
 }
 //# sourceMappingURL=put.js.map
