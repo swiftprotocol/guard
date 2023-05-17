@@ -43,7 +43,7 @@ Allows you to store any key value data where the value is encrypted.
 await guard.put("key", "value");
 ```
 
-### Get [TODO]
+### Get
 
 Allows you to retrieve key value data where the value is decrypted upon retrieval.
 
