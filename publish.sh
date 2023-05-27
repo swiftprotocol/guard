@@ -1,0 +1,1 @@
+rm -rf ./dist && tsc && jest && packito -d ./dist && yarn publish --access public ./dist;

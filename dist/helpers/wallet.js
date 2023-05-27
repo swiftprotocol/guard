@@ -7,20 +7,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-export function getAccount() {
+export function getAccount(chainId) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!window.wallet)
             throw new Error("Keplr/Leap not installed");
-        const offlineSigner = window.wallet.getOfflineSigner("juno-1");
+        const offlineSigner = window.wallet.getOfflineSigner(chainId);
         const accounts = yield offlineSigner.getAccounts();
         return accounts[0];
     });
 }
-export function getPublicKey() {
+export function getPublicKey(chainId) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!window.wallet)
             throw new Error("Keplr/Leap not installed");
-        const offlineSigner = window.wallet.getOfflineSigner("juno-1");
+        const offlineSigner = window.wallet.getOfflineSigner(chainId);
         const accounts = yield offlineSigner.getAccounts();
         const pubKey = Buffer.from(accounts[0].pubkey.buffer).toString("hex");
         return pubKey;

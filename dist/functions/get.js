@@ -8,13 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from "axios";
-import { getAccount } from "../helpers/wallet.js";
+import { getAccount } from "../helpers/wallet";
 export default function get(key, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
-        const account = yield getAccount();
+        const account = this.account || (yield getAccount(this.chainId));
         const now = new Date().toISOString();
         const body = `I am authorizing Guard to use my signature to access encrypted data on ${now}`;
-        const sig = yield window.wallet.signArbitrary("juno-1", account.address, body);
+        const sign = this.walletMethods.signArbitrary || window.wallet.signArbitrary;
+        const sig = yield sign(this.chainId, account.address, body);
         const msg = {
             msg: [
                 {
@@ -30,7 +31,8 @@ export default function get(key, namespace) {
             signatures: [sig],
         };
         const result = yield axios
-            .post(this.api + `/retrieve/${account.address}/${key}`, {
+            .post(this.api +
+            `/retrieve/${account.address}/${key}${namespace ? "/" + namespace : ""}`, {
             type: "address",
             msg,
         })
@@ -40,7 +42,6 @@ export default function get(key, namespace) {
             .catch((err) => {
             throw Error(err.stack);
         });
-        console.log(result);
         return result.value;
     });
 }

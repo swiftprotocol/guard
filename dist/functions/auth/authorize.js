@@ -7,17 +7,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getAccount } from "../helpers/wallet";
-import { RECIPIENT } from "../constants";
-import { encrypt } from "../helpers/encrypt";
-export default function put(key, value, namespace) {
+import get from "../get";
+import put from "../put";
+export default function authorize(type, address) {
     return __awaiter(this, void 0, void 0, function* () {
-        const account = this.account || (yield getAccount(this.chainId));
-        const encryptedValue = yield encrypt({
-            data: value,
-            recipientPubKey: RECIPIENT,
-        });
-        yield this.query(`INSERT INTO key_value (key, value) VALUES ('${namespace ? namespace + "/" : ""}${key}+${account.address}', '${encryptedValue}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;`);
+        let authString = "";
+        try {
+            authString = yield get.call(this, "authorizations");
+        }
+        catch (e) {
+            authString = "";
+        }
+        const authorizations = authString.split(",") || [];
+        if (!authorizations.includes(`${type}+${address}`))
+            authorizations.push(`${type}+${address}`);
+        yield put.call(this, "authorizations", authorizations.join(","));
     });
 }
-//# sourceMappingURL=put.js.map
+//# sourceMappingURL=authorize.js.map

@@ -1,18 +1,16 @@
 import { StdTx } from "@keplr-wallet/types";
 import axios from "axios";
-import { getAccount } from "../helpers/wallet.js";
+import { getAccount } from "../helpers/wallet";
 
 export default async function get(key: string, namespace?: string) {
-  const account = await getAccount();
+  const account = this.account || (await getAccount(this.chainId));
 
   const now = new Date().toISOString();
   const body = `I am authorizing Guard to use my signature to access encrypted data on ${now}`;
 
-  const sig = await window.wallet.signArbitrary(
-    "juno-1",
-    account.address,
-    body
-  );
+  const sign = this.walletMethods.signArbitrary || window.wallet.signArbitrary;
+
+  const sig = await sign(this.chainId, account.address, body);
 
   const msg: StdTx = {
     msg: [
@@ -30,18 +28,22 @@ export default async function get(key: string, namespace?: string) {
   };
 
   const result = await axios
-    .post(this.api + `/retrieve/${account.address}/${key}`, {
-      type: "address",
-      msg,
-    })
+    .post(
+      this.api +
+        `/retrieve/${account.address}/${key}${
+          namespace ? "/" + namespace : ""
+        }`,
+      {
+        type: "address",
+        msg,
+      }
+    )
     .then((res) => {
       return res.data;
     })
     .catch((err) => {
       throw Error(err.stack);
     });
-
-  console.log(result);
 
   return result.value;
 }

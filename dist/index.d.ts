@@ -8,8 +8,16 @@ declare global {
 }
 export interface GuardConstructorTypes {
     api: string;
-    wallet: WalletType;
+    wallet?: WalletType;
     namespace?: string;
+    chainId?: string;
+    account?: {
+        address: string;
+        hexPubKey: string;
+    };
+    walletMethods?: {
+        signArbitrary: Keplr["signArbitrary"];
+    };
 }
 export interface Row {
     key: string;
@@ -18,10 +26,17 @@ export interface Row {
 export declare type WalletType = "keplr" | "leap";
 export default class Guard {
     api: string;
-    wallet: WalletType;
+    wallet?: WalletType;
     defaultNamespace?: string;
-    constructor({ api, wallet, namespace }: GuardConstructorTypes);
+    chainId: string;
+    account?: GuardConstructorTypes["account"];
+    walletMethods?: GuardConstructorTypes["walletMethods"];
+    constructor({ api, wallet, namespace, chainId, account, walletMethods, }: GuardConstructorTypes);
     put(key: string, value: string, namespace?: string): Promise<any>;
     get(key: string, namespace?: string): Promise<any>;
+    authorize(type: string, address: string): Promise<any>;
+    revoke(type: string, address: string): Promise<any>;
+    notifyAuthorize(name: string): Promise<any>;
+    notifyRevoke(name: string): Promise<any>;
     query(q: string, values?: any): Promise<any>;
 }

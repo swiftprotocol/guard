@@ -8,13 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from "axios";
-import put from "./functions/put.js";
-import get from "./functions/get.js";
+import put from "./functions/put";
+import get from "./functions/get";
+import authorize from "./functions/auth/authorize";
+import revoke from "./functions/auth/revoke";
+import notifyAuthorize from "./functions/auth/notifyAuthorize";
+import notifyRevoke from "./functions/auth/notifyRevoke";
+import { getAccount } from "./helpers/wallet";
 export default class Guard {
-    constructor({ api, wallet, namespace }) {
+    constructor({ api, wallet, namespace, chainId = "juno-1", account, walletMethods, }) {
         this.api = api;
         this.wallet = wallet;
         this.defaultNamespace = namespace;
+        this.chainId = chainId;
+        this.account = account;
+        this.walletMethods = walletMethods;
+        if (!wallet && (!account || !walletMethods))
+            throw Error("[GUARD] Either WalletType or account & wallet methods is required.");
         switch (this.wallet) {
             case "keplr":
                 if ("keplr" in window)
@@ -25,6 +35,14 @@ export default class Guard {
                     window.wallet = window.leap;
                 break;
         }
+        if (process.env.NODE_ENV === "jest") {
+            if (this.account)
+                console.log("Guard instance initialized with custom account. Address: " +
+                    this.account.address);
+            else
+                getAccount(chainId).then((acc) => console.log("Guard instance initialized with wallet API. Address: " +
+                    acc.address));
+        }
     }
     put(key, value, namespace) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34,6 +52,26 @@ export default class Guard {
     get(key, namespace) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield get.call(this, key, namespace || this.defaultNamespace);
+        });
+    }
+    authorize(type, address) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield authorize.call(this, type, address);
+        });
+    }
+    revoke(type, address) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield revoke.call(this, type, address);
+        });
+    }
+    notifyAuthorize(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield notifyAuthorize.call(this, name);
+        });
+    }
+    notifyRevoke(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield notifyRevoke.call(this, name);
         });
     }
     query(q, values) {

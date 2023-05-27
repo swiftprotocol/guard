@@ -1,13 +1,13 @@
-import { getAccount } from "../helpers/wallet.js";
-import { RECIPIENT } from "../constants.js";
-import { encrypt } from "../helpers/encrypt.js";
+import { getAccount } from "../helpers/wallet";
+import { RECIPIENT } from "../constants";
+import { encrypt } from "../helpers/encrypt";
 
 export default async function put(
   key: string,
   value: string,
   namespace?: string
 ) {
-  const account = await getAccount();
+  const account = this.account || (await getAccount(this.chainId));
 
   const encryptedValue = await encrypt({
     data: value,

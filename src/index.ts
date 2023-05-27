@@ -1,8 +1,13 @@
 import type { Keplr } from "@keplr-wallet/types";
 import axios from "axios";
 
-import put from "./functions/put.js";
-import get from "./functions/get.js";
+import put from "./functions/put";
+import get from "./functions/get";
+import authorize from "./functions/auth/authorize";
+import revoke from "./functions/auth/revoke";
+import notifyAuthorize from "./functions/auth/notifyAuthorize";
+import notifyRevoke from "./functions/auth/notifyRevoke";
+import { getAccount } from "./helpers/wallet";
 
 declare global {
   interface Window {
@@ -14,8 +19,16 @@ declare global {
 
 export interface GuardConstructorTypes {
   api: string;
-  wallet: WalletType;
+  wallet?: WalletType;
   namespace?: string;
+  chainId?: string;
+  account?: {
+    address: string;
+    hexPubKey: string;
+  };
+  walletMethods?: {
+    signArbitrary: Keplr["signArbitrary"];
+  };
 }
 
 export interface Row {
@@ -27,13 +40,35 @@ export type WalletType = "keplr" | "leap";
 
 export default class Guard {
   public api: string;
-  public wallet: WalletType;
-  public defaultNamespace?: string;
+  public wallet?: WalletType;
 
-  constructor({ api, wallet, namespace }: GuardConstructorTypes) {
+  public defaultNamespace?: string;
+  public chainId: string;
+
+  public account?: GuardConstructorTypes["account"];
+  public walletMethods?: GuardConstructorTypes["walletMethods"];
+
+  constructor({
+    api,
+    wallet,
+    namespace,
+    chainId = "juno-1",
+    account,
+    walletMethods,
+  }: GuardConstructorTypes) {
     this.api = api;
     this.wallet = wallet;
+
     this.defaultNamespace = namespace;
+    this.chainId = chainId;
+
+    this.account = account;
+    this.walletMethods = walletMethods;
+
+    if (!wallet && (!account || !walletMethods))
+      throw Error(
+        "[GUARD] Either WalletType or account & wallet methods is required."
+      );
 
     switch (this.wallet) {
       case "keplr":
@@ -43,6 +78,21 @@ export default class Guard {
         if ("leap" in window) window.wallet = window.leap;
         break;
     }
+
+    if (process.env.NODE_ENV === "jest") {
+      if (this.account)
+        console.log(
+          "Guard instance initialized with custom account. Address: " +
+            this.account.address
+        );
+      else
+        getAccount(chainId).then((acc) =>
+          console.log(
+            "Guard instance initialized with wallet API. Address: " +
+              acc.address
+          )
+        );
+    }
   }
 
   public async put(key: string, value: string, namespace?: string) {
@@ -51,6 +101,22 @@ export default class Guard {
 
   public async get(key: string, namespace?: string) {
     return await get.call(this, key, namespace || this.defaultNamespace);
+  }
+
+  public async authorize(type: string, address: string) {
+    return await authorize.call(this, type, address);
+  }
+
+  public async revoke(type: string, address: string) {
+    return await revoke.call(this, type, address);
+  }
+
+  public async notifyAuthorize(name: string) {
+    return await notifyAuthorize.call(this, name);
+  }
+
+  public async notifyRevoke(name: string) {
+    return await notifyRevoke.call(this, name);
   }
 
   public async query(q: string, values?: any) {
