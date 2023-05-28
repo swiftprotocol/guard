@@ -7,9 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { getAccount } from "../helpers/wallet";
-import { RECIPIENT } from "../constants";
-import { encrypt } from "../helpers/encrypt";
+import { getAccount } from "../helpers/wallet.js";
+import { RECIPIENT } from "../constants.js";
+import { encrypt } from "../helpers/encrypt.js";
 export default function put(key, value, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
         const account = this.account || (yield getAccount(this.chainId));

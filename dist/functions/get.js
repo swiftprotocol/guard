@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import axios from "axios";
-import { getAccount } from "../helpers/wallet";
+import { getAccount } from "../helpers/wallet.js";
 export default function get(key, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
         const account = this.account || (yield getAccount(this.chainId));

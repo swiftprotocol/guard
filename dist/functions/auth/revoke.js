@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import get from "../get";
-import put from "../put";
+import get from "../get.js";
+import put from "../put.js";
 export default function revoke(type, address) {
     return __awaiter(this, void 0, void 0, function* () {
         let authString = "";
