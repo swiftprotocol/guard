@@ -2,7 +2,7 @@ import Guard from "../src";
 import { api, chainId, rpc } from "./constants";
 import { getSigningStargateClient, getWallet } from "./helpers";
 
-// This test will initialize a new instance of Guard
+// These tests require an instance of Guard API running on localhost:3450
 
 let windowSpy: jest.SpyInstance;
 
