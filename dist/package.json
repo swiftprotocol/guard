@@ -1,6 +1,6 @@
 {
 	"name": "@swiftprotocol/guard",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"type": "module",
 	"description": "Wallet-Based Data Protection API",
 	"main": "index.js",
