@@ -79,20 +79,20 @@ export default class Guard {
         break;
     }
 
-    if (process.env.NODE_ENV === "jest") {
-      if (this.account)
-        console.log(
-          "Guard instance initialized with custom account. Address: " +
-            this.account.address
-        );
-      else
-        getAccount(chainId).then((acc) =>
-          console.log(
-            "Guard instance initialized with wallet API. Address: " +
-              acc.address
-          )
-        );
-    }
+    // if (process.env.NODE_ENV === "jest") {
+    //   if (this.account)
+    //     console.log(
+    //       "Guard instance initialized with custom account. Address: " +
+    //         this.account.address
+    //     );
+    //   else
+    //     getAccount(chainId).then((acc) =>
+    //       console.log(
+    //         "Guard instance initialized with wallet API. Address: " +
+    //           acc.address
+    //       )
+    //     );
+    // }
   }
 
   public async put(key: string, value: string, namespace?: string) {
