@@ -132,9 +132,10 @@ export default class Guard {
   }) {
     const data = await axios
       .post(
-        `${this.api}/put/${address}/${key}${namespace ? "/" + namespace : ""}}`,
+        `${this.api}/put/${address}/${key}`,
         {
           value,
+          namespace,
         },
         {
           headers: {

@@ -28,16 +28,11 @@ export default async function get(key: string, namespace?: string) {
   };
 
   const result = await axios
-    .post(
-      this.api +
-        `/retrieve/${account.address}/${key}${
-          namespace ? "/" + namespace : ""
-        }`,
-      {
-        type: "address",
-        msg,
-      }
-    )
+    .post(this.api + `/retrieve/${account.address}/${key}`, {
+      type: "address",
+      namespace,
+      msg,
+    })
     .then((res) => {
       return res.data;
     })
