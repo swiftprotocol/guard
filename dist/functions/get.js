@@ -14,8 +14,10 @@ export default function get(key, namespace) {
         const account = this.account || (yield getAccount(this.chainId));
         const now = new Date().toISOString();
         const body = `I am authorizing Guard to use my signature to access encrypted data on ${now}`;
-        const sign = this.walletMethods.signArbitrary || window.wallet.signArbitrary;
-        const sig = yield sign(this.chainId, account.address, body);
+        const sign = this.walletMethods
+            ? this.walletMethods.signArbitrary
+            : window.wallet.signArbitrary;
+        const sig = yield sign.call(this, this.chainId, account.address, body);
         const msg = {
             msg: [
                 {
