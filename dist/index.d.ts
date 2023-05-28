@@ -38,5 +38,10 @@ export default class Guard {
     revoke(type: string, address: string): Promise<any>;
     notifyAuthorize(name: string): Promise<any>;
     notifyRevoke(name: string): Promise<any>;
-    query(q: string, values?: any): Promise<any>;
+    putAPI({ address, key, value, namespace, }: {
+        address: string;
+        key: string;
+        value: string;
+        namespace?: string;
+    }): Promise<any>;
 }

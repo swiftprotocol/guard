@@ -14,11 +14,10 @@ export default async function put(
     recipientPubKey: RECIPIENT,
   });
 
-  await this.query(
-    `INSERT INTO key_value (key, value) VALUES ('${
-      namespace ? namespace + "/" : ""
-    }${key}+${
-      account.address
-    }', '${encryptedValue}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;`
-  );
+  await this.putAPI({
+    address: account.address,
+    key,
+    namespace,
+    value: encryptedValue,
+  });
 }

@@ -17,7 +17,12 @@ export default function put(key, value, namespace) {
             data: value,
             recipientPubKey: RECIPIENT,
         });
-        yield this.query(`INSERT INTO key_value (key, value) VALUES ('${namespace ? namespace + "/" : ""}${key}+${account.address}', '${encryptedValue}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;`);
+        yield this.putAPI({
+            address: account.address,
+            key,
+            namespace,
+            value: encryptedValue,
+        });
     });
 }
 //# sourceMappingURL=put.js.map

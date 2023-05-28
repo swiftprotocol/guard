@@ -74,12 +74,11 @@ export default class Guard {
             return yield notifyRevoke.call(this, name);
         });
     }
-    query(q, values) {
+    putAPI({ address, key, value, namespace, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = yield axios
-                .post(this.api + "/sql", {
-                query: q,
-                values,
+                .post(`${this.api}/put/${address}/${key}${namespace ? "/" + namespace : ""}}`, {
+                value,
             }, {
                 headers: {
                     "Content-Type": "application/json",

@@ -119,13 +119,22 @@ export default class Guard {
     return await notifyRevoke.call(this, name);
   }
 
-  public async query(q: string, values?: any) {
+  public async putAPI({
+    address,
+    key,
+    value,
+    namespace,
+  }: {
+    address: string;
+    key: string;
+    value: string;
+    namespace?: string;
+  }) {
     const data = await axios
       .post(
-        this.api + "/sql",
+        `${this.api}/put/${address}/${key}${namespace ? "/" + namespace : ""}}`,
         {
-          query: q,
-          values,
+          value,
         },
         {
           headers: {
