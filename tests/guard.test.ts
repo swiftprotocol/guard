@@ -84,7 +84,49 @@ test("Initialize Guard with a custom wallet", async () => {
   expect(guard.chainId).toBe(chainId);
 });
 
-test("PUT/GET encrypted data from Guard API", async () => {
+test("PUT/GET encrypted data with the Keplr API", async () => {
+  const wallet = await getWallet();
+  const client = await getSigningStargateClient(rpc, wallet);
+
+  const getOfflineSigner = () => wallet;
+
+  const signArbitrary = async (_: string, signer: string, body: string) => {
+    const msg = await client.experimentalAdr36Sign(
+      signer,
+      Uint8Array.from(Array.from(body).map((c) => c.charCodeAt(0)))
+    );
+
+    return msg.signatures[0];
+  };
+
+  windowSpy.mockImplementation(() => ({
+    keplr: {},
+    wallet: {
+      version: "0.11.63",
+      mode: "extension",
+      defaultOptions: {},
+      getOfflineSigner,
+      signArbitrary,
+    },
+  }));
+
+  const guard = new Guard({
+    api,
+    chainId,
+    wallet: "keplr",
+  });
+
+  const value = "Hello world!";
+
+  await guard.put("test-data", value, "jest");
+
+  const decryptedValue = await guard.get("test-data", "jest");
+  console.log("Decrypted value from API: " + decryptedValue);
+
+  expect(decryptedValue).toBe(value);
+});
+
+test("PUT/GET encrypted data with a custom wallet", async () => {
   const wallet = await getWallet();
   const [account] = await wallet.getAccounts();
 
