@@ -77,8 +77,9 @@ export default class Guard {
     putAPI({ address, key, value, namespace, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = yield axios
-                .post(`${this.api}/put/${address}/${key}${namespace ? "/" + namespace : ""}}`, {
+                .post(`${this.api}/put/${address}/${key}`, {
                 value,
+                namespace,
             }, {
                 headers: {
                     "Content-Type": "application/json",
