@@ -1,5 +1,5 @@
-import get from "../get";
-import put from "../put";
+import get from "../get.js";
+import put from "../put.js";
 
 export default async function authorize(type: string, address: string) {
   let authString = "";

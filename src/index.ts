@@ -1,13 +1,13 @@
 import type { Keplr } from "@keplr-wallet/types";
 import axios from "axios";
 
-import put from "./functions/put";
-import get from "./functions/get";
-import authorize from "./functions/auth/authorize";
-import revoke from "./functions/auth/revoke";
-import notifyAuthorize from "./functions/auth/notifyAuthorize";
-import notifyRevoke from "./functions/auth/notifyRevoke";
-import { getAccount } from "./helpers/wallet";
+import put from "./functions/put.js";
+import get from "./functions/get.js";
+import authorize from "./functions/auth/authorize.js";
+import revoke from "./functions/auth/revoke.js";
+import notifyAuthorize from "./functions/auth/notifyAuthorize.js";
+import notifyRevoke from "./functions/auth/notifyRevoke.js";
+import { getAccount } from "./helpers/wallet.js";
 
 declare global {
   interface Window {

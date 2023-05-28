@@ -1,6 +1,6 @@
-import { getAccount } from "../helpers/wallet";
-import { RECIPIENT } from "../constants";
-import { encrypt } from "../helpers/encrypt";
+import { getAccount } from "../helpers/wallet.js";
+import { RECIPIENT } from "../constants.js";
+import { encrypt } from "../helpers/encrypt.js";
 
 export default async function put(
   key: string,
