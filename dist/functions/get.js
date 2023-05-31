@@ -13,7 +13,7 @@ import { signAuthorizationMessage } from "../helpers/sign.js";
 export default function get(key, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
         const account = this.account || (yield getAccount(this.chainId));
-        const msg = yield signAuthorizationMessage.call(this);
+        const msg = this.sig || (yield signAuthorizationMessage.call(this));
         const result = yield axios
             .post(this.api + `/retrieve/${account.address}/${key}`, {
             type: "address",
