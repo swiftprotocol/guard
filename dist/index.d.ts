@@ -4,6 +4,7 @@ declare global {
         wallet: Keplr;
         keplr?: any;
         leap?: any;
+        cosmostation?: any;
     }
 }
 export interface GuardConstructorTypes {
@@ -23,12 +24,13 @@ export interface Row {
     key: string;
     value: string;
 }
-export declare type WalletType = "keplr" | "leap";
+export declare type WalletType = "keplr" | "leap" | "cosmostation";
 export default class Guard {
     api: string;
     wallet?: WalletType;
     defaultNamespace?: string;
     chainId: string;
+    private sig?;
     account?: GuardConstructorTypes["account"];
     walletMethods?: GuardConstructorTypes["walletMethods"];
     constructor({ api, wallet, namespace, chainId, account, walletMethods, }: GuardConstructorTypes);

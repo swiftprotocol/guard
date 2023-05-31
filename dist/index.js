@@ -14,7 +14,7 @@ import authorize from "./functions/auth/authorize.js";
 import revoke from "./functions/auth/revoke.js";
 import notifyAuthorize from "./functions/auth/notifyAuthorize.js";
 import notifyRevoke from "./functions/auth/notifyRevoke.js";
-import { getAccount } from "./helpers/wallet.js";
+import { signAuthorizationMessage } from "./helpers/sign.js";
 export default class Guard {
     constructor({ api, wallet, namespace, chainId = "juno-1", account, walletMethods, }) {
         this.api = api;
@@ -34,15 +34,25 @@ export default class Guard {
                 if ("leap" in window)
                     window.wallet = window.leap;
                 break;
+            case "cosmostation":
+                if ("cosmostation" in window)
+                    window.wallet = window.cosmostation.providers.keplr;
+                break;
         }
-        if (process.env.NODE_ENV === "jest") {
-            if (this.account)
-                console.log("Guard instance initialized with custom account. Address: " +
-                    this.account.address);
-            else
-                getAccount(chainId).then((acc) => console.log("Guard instance initialized with wallet API. Address: " +
-                    acc.address));
-        }
+        // if (process.env.NODE_ENV === "jest") {
+        //   if (this.account)
+        //     console.log(
+        //       "Guard instance initialized with custom account. Address: " +
+        //         this.account.address
+        //     );
+        //   else
+        //     getAccount(chainId).then((acc) =>
+        //       console.log(
+        //         "Guard instance initialized with wallet API. Address: " +
+        //           acc.address
+        //       )
+        //     );
+        // }
     }
     put(key, value, namespace) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -76,10 +86,13 @@ export default class Guard {
     }
     putAPI({ address, key, value, namespace, }) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!this.sig)
+                this.sig = yield signAuthorizationMessage.call(this);
             const data = yield axios
                 .post(`${this.api}/put/${address}/${key}`, {
                 value,
                 namespace,
+                msg: this.sig,
             }, {
                 headers: {
                     "Content-Type": "application/json",

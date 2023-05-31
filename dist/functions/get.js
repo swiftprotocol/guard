@@ -9,29 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import axios from "axios";
 import { getAccount } from "../helpers/wallet.js";
+import { signAuthorizationMessage } from "../helpers/sign.js";
 export default function get(key, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
         const account = this.account || (yield getAccount(this.chainId));
-        const now = new Date().toISOString();
-        const body = `I am authorizing Guard to use my signature to access encrypted data on ${now}`;
-        const sign = this.walletMethods
-            ? this.walletMethods.signArbitrary
-            : window.wallet.signArbitrary;
-        const sig = yield sign.call(this, this.chainId, account.address, body);
-        const msg = {
-            msg: [
-                {
-                    type: "sign/MsgSignData",
-                    value: {
-                        signer: account.address,
-                        data: btoa(body),
-                    },
-                },
-            ],
-            fee: { gas: "0", amount: [] },
-            memo: "",
-            signatures: [sig],
-        };
+        const msg = yield signAuthorizationMessage.call(this);
         const result = yield axios
             .post(this.api + `/retrieve/${account.address}/${key}`, {
             type: "address",

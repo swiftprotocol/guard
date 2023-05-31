@@ -1,4 +1,4 @@
-import type { Keplr } from "@keplr-wallet/types";
+import type { Keplr, StdTx } from "@keplr-wallet/types";
 import axios from "axios";
 
 import put from "./functions/put.js";
@@ -7,13 +7,14 @@ import authorize from "./functions/auth/authorize.js";
 import revoke from "./functions/auth/revoke.js";
 import notifyAuthorize from "./functions/auth/notifyAuthorize.js";
 import notifyRevoke from "./functions/auth/notifyRevoke.js";
-import { getAccount } from "./helpers/wallet.js";
+import { signAuthorizationMessage } from "./helpers/sign.js";
 
 declare global {
   interface Window {
     wallet: Keplr;
     keplr?: any;
     leap?: any;
+    cosmostation?: any;
   }
 }
 
@@ -36,7 +37,7 @@ export interface Row {
   value: string;
 }
 
-export type WalletType = "keplr" | "leap";
+export type WalletType = "keplr" | "leap" | "cosmostation";
 
 export default class Guard {
   public api: string;
@@ -44,6 +45,8 @@ export default class Guard {
 
   public defaultNamespace?: string;
   public chainId: string;
+
+  private sig?: StdTx;
 
   public account?: GuardConstructorTypes["account"];
   public walletMethods?: GuardConstructorTypes["walletMethods"];
@@ -76,6 +79,10 @@ export default class Guard {
         break;
       case "leap":
         if ("leap" in window) window.wallet = window.leap;
+        break;
+      case "cosmostation":
+        if ("cosmostation" in window)
+          window.wallet = window.cosmostation.providers.keplr;
         break;
     }
 
@@ -130,12 +137,14 @@ export default class Guard {
     value: string;
     namespace?: string;
   }) {
+    if (!this.sig) this.sig = await signAuthorizationMessage.call(this);
     const data = await axios
       .post(
         `${this.api}/put/${address}/${key}`,
         {
           value,
           namespace,
+          msg: this.sig,
         },
         {
           headers: {
