@@ -1,4 +1,4 @@
-import type { Keplr } from "@keplr-wallet/types";
+import type { Keplr, StdTx } from "@keplr-wallet/types";
 declare global {
     interface Window {
         wallet: Keplr;
@@ -24,13 +24,13 @@ export interface Row {
     key: string;
     value: string;
 }
-export declare type WalletType = "keplr" | "leap" | "cosmostation";
+export type WalletType = "keplr" | "leap" | "cosmostation";
 export default class Guard {
     api: string;
     wallet?: WalletType;
     defaultNamespace?: string;
     chainId: string;
-    private sig?;
+    sig?: StdTx;
     account?: GuardConstructorTypes["account"];
     walletMethods?: GuardConstructorTypes["walletMethods"];
     constructor({ api, wallet, namespace, chainId, account, walletMethods, }: GuardConstructorTypes);

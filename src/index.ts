@@ -46,7 +46,7 @@ export default class Guard {
   public defaultNamespace?: string;
   public chainId: string;
 
-  private sig?: StdTx;
+  public sig?: StdTx;
 
   public account?: GuardConstructorTypes["account"];
   public walletMethods?: GuardConstructorTypes["walletMethods"];
