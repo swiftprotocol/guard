@@ -7,9 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { fromBech32 } from '@cosmjs/encoding';
 import decrypt from '../helpers/decrypt.js';
 import encrypt from '../helpers/encrypt.js';
-export default function revoke(address, key, recipient, privateKeyHex, signature, namespace) {
+import { signMessage } from '../index.js';
+export default function revoke(address, key, recipient, privateKeyHex, namespace) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield this.Data.get({
             address,
@@ -31,11 +33,15 @@ export default function revoke(address, key, recipient, privateKeyHex, signature
                 data: decryptedValue,
                 recipients,
             });
+            const rawAddress = fromBech32(address).data;
+            const hexAddress = Buffer.from(rawAddress).toString('hex');
+            const signature = yield signMessage(privateKeyHex, hexAddress);
             const newResponse = yield this.Data.set({
-                key,
-                cipherText: newCipherText,
-                symmetricKeys,
                 signature,
+                publicKey: this.publicKey,
+                key,
+                symmetricKeys,
+                cipherText: newCipherText,
                 namespace,
             });
             if (newResponse.status === 200) {

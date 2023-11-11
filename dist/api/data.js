@@ -22,10 +22,11 @@ export default class Data {
             });
         });
     }
-    set({ signature, key, symmetricKeys, cipherText, namespace, }) {
+    set({ signature, publicKey, key, symmetricKeys, cipherText, namespace, }) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield axios.post(this.api + '/data/set', {
                 signature,
+                publicKey,
                 key,
                 symmetricKeys,
                 cipherText,

@@ -12,17 +12,19 @@ export default class Passkeys {
     constructor(api) {
         this.api = api;
     }
-    get({ pubkey }) {
+    get({ address }) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield axios.post(this.api + '/passkeys/get', {
-                pubkey,
+                address,
             });
         });
     }
-    set({ signature, credential, }) {
+    set({ walletSignature, signature, publicKey, credential, }) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield axios.post(this.api + '/passkeys/set', {
+                walletSignature,
                 signature,
+                publicKey,
                 credential,
             });
         });

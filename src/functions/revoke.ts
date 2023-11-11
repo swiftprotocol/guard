@@ -1,8 +1,8 @@
-import type { StdTx } from '@cosmjs/amino'
+import { fromBech32 } from '@cosmjs/encoding'
 import { GetResponse } from '../api/data.js'
 import decrypt from '../helpers/decrypt.js'
 import encrypt from '../helpers/encrypt.js'
-import Guard from '../index.js'
+import Guard, { signMessage } from '../index.js'
 import type { ErrorResponse } from '../types/api.js'
 
 export default async function revoke(
@@ -11,7 +11,6 @@ export default async function revoke(
   key: string,
   recipient: string,
   privateKeyHex: string,
-  signature: StdTx,
   namespace?: string
 ): Promise<void> {
   const response = await this.Data.get({
@@ -43,11 +42,17 @@ export default async function revoke(
       recipients,
     })
 
+    const rawAddress = fromBech32(address).data
+    const hexAddress = Buffer.from(rawAddress).toString('hex')
+
+    const signature = await signMessage(privateKeyHex, hexAddress)
+
     const newResponse = await this.Data.set({
-      key,
-      cipherText: newCipherText,
-      symmetricKeys,
       signature,
+      publicKey: this.publicKey,
+      key,
+      symmetricKeys,
+      cipherText: newCipherText,
       namespace,
     })
 

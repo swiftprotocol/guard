@@ -1,0 +1,23 @@
+{
+	"name": "@swiftprotocol/guard",
+	"version": "0.0.1-alpha02",
+	"description": "Lightweight Swift Protocol Guard client.",
+	"main": "index.js",
+	"types": "index.d.ts",
+	"repository": "git+https://github.com/swiftprotocol/guard.git",
+	"authors": [
+		"Josef Leventon <josef@swiftprotocol.zone>"
+	],
+	"license": "UNLICENSED",
+	"engines": {
+		"npm": ">=7.0.0",
+		"node": ">=16.16.0"
+	},
+	"dependencies": {
+		"@cosmjs/amino": "^0.31.3",
+		"@cosmjs/encoding": "^0.31.3",
+		"@peculiar/webcrypto": "^1.4.3",
+		"@swiftprotocol/auth": "^0.1.4",
+		"axios": "^1.6.1"
+	}
+}

@@ -7,28 +7,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import encrypt from '../helpers/encrypt.js';
-export default function set(key, value, recipients, signature, publicKey, namespace) {
+import { Crypto } from '@peculiar/webcrypto';
+const crypto = new Crypto();
+export default function signMessage(privateKeyHex, message) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { symmetricKeys, cipherText } = yield encrypt({
-            data: value,
-            recipients,
-        });
-        const response = yield this.Data.set({
-            signature,
-            publicKey,
-            key,
-            symmetricKeys,
-            cipherText,
-            namespace,
-        });
-        if (response.status === 200) {
-            return;
-        }
-        else {
-            const errorResponse = response.data;
-            throw new Error(`/data/get returned ${response.status} status with error: ${errorResponse.error}`);
-        }
+        const privateKeyBuffer = Buffer.from(privateKeyHex, 'hex');
+        const privateKey = yield crypto.subtle.importKey('pkcs8', privateKeyBuffer, {
+            name: 'RSASSA-PKCS1-v1_5',
+            hash: 'SHA-256',
+        }, false, ['sign']);
+        const encoder = new TextEncoder();
+        const messageBuffer = encoder.encode(message);
+        const signatureBuffer = yield crypto.subtle.sign('RSASSA-PKCS1-v1_5', privateKey, messageBuffer);
+        const signatureHex = Buffer.from(signatureBuffer).toString('hex');
+        return signatureHex;
     });
 }
-//# sourceMappingURL=set.js.map
+//# sourceMappingURL=signMessage.js.map

@@ -5,6 +5,7 @@ import { ErrorResponse } from '../types/api.js'
 
 export interface GetResponse {
   hexAddress: string
+  pubkey: string
   passkey: string
 }
 
@@ -20,26 +21,32 @@ export default class Passkeys {
     this.api = api
   }
 
-  public async get({ pubkey }: { pubkey: string }) {
+  public async get({ address }: { address: string }) {
     return await axios.post<GetResponse | ErrorResponse>(
       this.api + '/passkeys/get',
       {
-        pubkey,
+        address,
       }
     )
   }
 
   public async set({
+    walletSignature,
     signature,
+    publicKey,
     credential,
   }: {
-    signature: StdTx
+    walletSignature: StdTx
+    signature: string
+    publicKey: string
     credential: CredentialKey
   }) {
     return await axios.post<SetResponse | ErrorResponse>(
       this.api + '/passkeys/set',
       {
+        walletSignature,
         signature,
+        publicKey,
         credential,
       }
     )

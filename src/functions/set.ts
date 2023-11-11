@@ -1,4 +1,3 @@
-import type { StdTx } from '@cosmjs/amino'
 import encrypt from '../helpers/encrypt.js'
 import Guard from '../index.js'
 import type { ErrorResponse } from '../types/api.js'
@@ -8,7 +7,8 @@ export default async function set(
   key: string,
   value: string,
   recipients: string[],
-  signature: StdTx,
+  signature: string,
+  publicKey: string,
   namespace?: string
 ): Promise<void> {
   const { symmetricKeys, cipherText } = await encrypt({
@@ -17,10 +17,11 @@ export default async function set(
   })
 
   const response = await this.Data.set({
-    key,
-    cipherText,
-    symmetricKeys,
     signature,
+    publicKey,
+    key,
+    symmetricKeys,
+    cipherText,
     namespace,
   })
 

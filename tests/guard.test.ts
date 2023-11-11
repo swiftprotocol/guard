@@ -1,10 +1,12 @@
-import type { StdTx } from '@cosmjs/amino'
+import { StdTx } from '@cosmjs/amino'
+import { fromBech32 } from '@cosmjs/encoding'
 import Guard from '../src'
 import {
   decrypt,
   encrypt,
   generateAuthorizationMessage,
   generateKeyPair,
+  signMessage,
 } from '../src/helpers'
 import { api, chainId, namespace } from './constants'
 import { generateWallet } from './helpers'
@@ -38,21 +40,19 @@ test('Encrypt & Decrypt Data', async () => {
   expect(decryptedData).toBe(data)
 })
 
-test('Set & Get Data with Guard', async () => {
+test('Get & Set Data with Guard', async () => {
   const wallet = await generateWallet()
   expect(wallet.address).toBeDefined()
 
   const { publicKeyHex, privateKeyHex } = await generateKeyPair()
-  const signatureBody = generateAuthorizationMessage()
-  const sig = await wallet.signArbitrary(chainId, wallet.address, signatureBody)
 
   const guard = new Guard(publicKeyHex, privateKeyHex, { api, namespace })
   expect(guard.publicKey).toBe(publicKeyHex)
 
-  const key = 'test'
-  const value = 'Hello World!'
+  const signatureBody = generateAuthorizationMessage()
+  const sig = await wallet.signArbitrary(chainId, wallet.address, signatureBody)
 
-  const signature: StdTx = {
+  const walletSignature: StdTx = {
     msg: [
       {
         type: 'sign/MsgSignData',
@@ -67,7 +67,22 @@ test('Set & Get Data with Guard', async () => {
     signatures: [sig],
   }
 
-  await guard.set(key, value, [publicKeyHex], signature)
+  const rawAddress = fromBech32(wallet.address).data
+  const hexAddress = Buffer.from(rawAddress).toString('hex')
+
+  const signature = await signMessage(privateKeyHex, hexAddress)
+
+  await guard.Passkeys.set({
+    walletSignature,
+    signature,
+    publicKey: publicKeyHex,
+    credential: { id: 'test', publicKey: 'test', algorithm: 'RS256' },
+  })
+
+  const key = 'test'
+  const value = 'Hello World!'
+
+  await guard.set(wallet.address, key, value, [publicKeyHex])
 
   const response = await guard.get(wallet.address, key)
   expect(response).toBe(value)
@@ -83,9 +98,6 @@ test('Authorize & Revoke with Guard', async () => {
     privateKeyHex: recipientPrivateKeyHex,
   } = await generateKeyPair()
 
-  const signatureBody = generateAuthorizationMessage()
-  const sig = await wallet.signArbitrary(chainId, wallet.address, signatureBody)
-
   const guard = new Guard(publicKeyHex, privateKeyHex, { api, namespace })
   expect(guard.publicKey).toBe(publicKeyHex)
 
@@ -96,10 +108,10 @@ test('Authorize & Revoke with Guard', async () => {
   )
   expect(recipientGuard.publicKey).toBe(recipientPublicKeyHex)
 
-  const key = 'test'
-  const value = 'Hello World!'
+  const signatureBody = generateAuthorizationMessage()
+  const sig = await wallet.signArbitrary(chainId, wallet.address, signatureBody)
 
-  const signature: StdTx = {
+  const walletSignature: StdTx = {
     msg: [
       {
         type: 'sign/MsgSignData',
@@ -114,17 +126,32 @@ test('Authorize & Revoke with Guard', async () => {
     signatures: [sig],
   }
 
-  await guard.set(key, value, [publicKeyHex], signature)
+  const rawAddress = fromBech32(wallet.address).data
+  const hexAddress = Buffer.from(rawAddress).toString('hex')
+
+  const signature = await signMessage(privateKeyHex, hexAddress)
+
+  await guard.Passkeys.set({
+    walletSignature,
+    signature,
+    publicKey: publicKeyHex,
+    credential: { id: 'test', publicKey: 'test', algorithm: 'RS256' },
+  })
+
+  const key = 'test'
+  const value = 'Hello World!'
+
+  await guard.set(wallet.address, key, value, [publicKeyHex])
 
   const response = await guard.get(wallet.address, key)
   expect(response).toBe(value)
 
-  await guard.authorize(wallet.address, key, recipientPublicKeyHex, signature)
+  await guard.authorize(wallet.address, key, recipientPublicKeyHex)
 
   const recipientResponse = await recipientGuard.get(wallet.address, key)
   expect(recipientResponse).toBe(value)
 
-  await guard.revoke(wallet.address, key, recipientPublicKeyHex, signature)
+  await guard.revoke(wallet.address, key, recipientPublicKeyHex)
 
   try {
     await recipientGuard.get(wallet.address, key)

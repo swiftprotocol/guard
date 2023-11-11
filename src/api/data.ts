@@ -1,4 +1,3 @@
-import type { StdTx } from '@cosmjs/amino'
 import axios from 'axios'
 import { ErrorResponse } from '../types/api.js'
 import type { SymmKey } from '../types/database.js'
@@ -45,12 +44,14 @@ export default class Data {
 
   public async set({
     signature,
+    publicKey,
     key,
     symmetricKeys,
     cipherText,
     namespace,
   }: {
-    signature: StdTx
+    signature: string
+    publicKey: string
     key: string
     symmetricKeys: SymmKey[]
     cipherText: string
@@ -60,6 +61,7 @@ export default class Data {
       this.api + '/data/set',
       {
         signature,
+        publicKey,
         key,
         symmetricKeys,
         cipherText,

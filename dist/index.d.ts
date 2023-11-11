@@ -1,5 +1,5 @@
-import type { StdTx } from '@cosmjs/amino';
 import { Data, Passkeys, Webauthn } from './api/index.js';
+export * from './helpers/index.js';
 export default class Guard {
     api: string;
     namespace: string | undefined;
@@ -13,7 +13,7 @@ export default class Guard {
         namespace?: string;
     });
     get(address: string, key: string): Promise<string>;
-    set(key: string, value: string, recipients: string[], signature: StdTx): Promise<any>;
-    authorize(address: string, key: string, recipient: string, signature: StdTx): Promise<any>;
-    revoke(address: string, key: string, recipient: string, signature: StdTx): Promise<any>;
+    set(address: string, key: string, value: string, recipients: string[]): Promise<any>;
+    authorize(address: string, key: string, recipient: string): Promise<any>;
+    revoke(address: string, key: string, recipient: string): Promise<any>;
 }
