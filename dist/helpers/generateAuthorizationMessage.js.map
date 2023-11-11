@@ -1,0 +1,1 @@
+{"version":3,"file":"generateAuthorizationMessage.js","sourceRoot":"","sources":["../../src/helpers/generateAuthorizationMessage.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,UAAU,4BAA4B;IAClD,MAAM,GAAG,GAAG,IAAI,IAAI,EAAE,CAAC,WAAW,EAAE,CAAA;IACpC,OAAO,4SAA4S,GAAG,EAAE,CAAA;AAC1T,CAAC"}

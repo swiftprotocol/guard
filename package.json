@@ -1,0 +1,40 @@
+{
+  "name": "@swiftprotocol/guard",
+  "version": "0.0.1-alpha01",
+  "description": "Lightweight Swift Protocol Guard client.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": "git+https://github.com/swiftprotocol/guard.git",
+  "authors": [
+    "Josef Leventon <josef@swiftprotocol.zone>"
+  ],
+  "scripts": {
+    "test": "jest",
+    "pretty": "prettier --write \"src/**/*.ts\"",
+    "build": "tsc && packito -d ./dist"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=16.16.0"
+  },
+  "dependencies": {
+    "@cosmjs/amino": "^0.31.3",
+    "@peculiar/webcrypto": "^1.4.3",
+    "@swiftprotocol/auth": "^0.1.4",
+    "axios": "^1.6.1",
+    "node-rsa": "^1.1.1"
+  },
+  "devDependencies": {
+    "@swiftprotocol/stargate": "^0.26.6",
+    "@types/jest": "^29.5.8",
+    "@types/node-rsa": "^1.1.4",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
