@@ -1,4 +1,5 @@
 import { Secp256k1HdWallet } from '@cosmjs/amino'
+import { fromBech32 } from '@cosmjs/encoding'
 import { SigningStargateClient } from '@swiftprotocol/stargate'
 import { mnemonic, prefix, rpc } from './constants'
 
@@ -18,7 +19,8 @@ export async function generateWallet() {
   const [account] = await wallet.getAccounts()
 
   const address = account.address
-  const hexPubKey = Buffer.from(account.pubkey.buffer).toString('hex')
+  const rawAddress = fromBech32(address).data
+  const hexAddress = Buffer.from(rawAddress).toString('hex')
 
   const client = await getSigningStargateClient(rpc, wallet)
 
@@ -31,5 +33,5 @@ export async function generateWallet() {
     return msg.signatures[0]
   }
 
-  return { address, hexPubKey, client, signArbitrary }
+  return { address, hexAddress, client, signArbitrary }
 }

@@ -1,5 +1,4 @@
 import { StdTx } from '@cosmjs/amino'
-import { fromBech32 } from '@cosmjs/encoding'
 import Guard from '../src'
 import {
   decrypt,
@@ -67,10 +66,7 @@ test('Get & Set Data with Guard', async () => {
     signatures: [sig],
   }
 
-  const rawAddress = fromBech32(wallet.address).data
-  const hexAddress = Buffer.from(rawAddress).toString('hex')
-
-  const signature = await signMessage(privateKeyHex, hexAddress)
+  const signature = await signMessage(privateKeyHex, wallet.hexAddress)
 
   await guard.Passkeys.set({
     walletSignature,
@@ -126,10 +122,7 @@ test('Authorize & Revoke with Guard', async () => {
     signatures: [sig],
   }
 
-  const rawAddress = fromBech32(wallet.address).data
-  const hexAddress = Buffer.from(rawAddress).toString('hex')
-
-  const signature = await signMessage(privateKeyHex, hexAddress)
+  const signature = await signMessage(privateKeyHex, wallet.hexAddress)
 
   await guard.Passkeys.set({
     walletSignature,
