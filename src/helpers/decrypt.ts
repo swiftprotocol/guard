@@ -1,7 +1,7 @@
 import type { DecryptParams } from '../types/encryption.js'
 
 import { Crypto } from '@peculiar/webcrypto'
-import { TextDecoder } from 'util'
+import { TextDecoder } from 'text-encoding'
 
 const textDecoder = new TextDecoder()
 const crypto = new Crypto()
