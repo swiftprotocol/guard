@@ -12,17 +12,17 @@ export default class Webauthn {
     constructor(api) {
         this.api = api;
     }
-    challenge({ pubkey }) {
+    challenge({ address }) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield axios.post(this.api + '/webauthn/challenge', {
-                pubkey,
+                address,
             });
         });
     }
-    verify({ pubkey, registration, }) {
+    verify({ address, registration, }) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield axios.post(this.api + '/webauthn/verify', {
-                pubkey,
+                address,
                 registration,
             });
         });

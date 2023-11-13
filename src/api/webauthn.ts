@@ -23,26 +23,26 @@ export default class Webauthn {
     this.api = api
   }
 
-  public async challenge({ pubkey }: { pubkey: string }) {
+  public async challenge({ address }: { address: string }) {
     return await axios.post<ChallengeResponse | ErrorResponse>(
       this.api + '/webauthn/challenge',
       {
-        pubkey,
+        address,
       }
     )
   }
 
   public async verify({
-    pubkey,
+    address,
     registration,
   }: {
-    pubkey: string
+    address: string
     registration: RegistrationEncoded
   }) {
     return await axios.post<VerifyResponse | ErrorResponse>(
       this.api + '/webauthn/verify',
       {
-        pubkey,
+        address,
         registration,
       }
     )

@@ -12,11 +12,11 @@ export interface VerifyResponse {
 export default class Webauthn {
     private api;
     constructor(api: string);
-    challenge({ pubkey }: {
-        pubkey: string;
+    challenge({ address }: {
+        address: string;
     }): Promise<import("axios").AxiosResponse<ErrorResponse | ChallengeResponse, any>>;
-    verify({ pubkey, registration, }: {
-        pubkey: string;
+    verify({ address, registration, }: {
+        address: string;
         registration: RegistrationEncoded;
     }): Promise<import("axios").AxiosResponse<ErrorResponse | VerifyResponse, any>>;
 }
