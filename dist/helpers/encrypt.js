@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Crypto } from '@peculiar/webcrypto';
-import { TextEncoder } from 'util';
+import { TextEncoder } from 'text-encoding';
 const textEncoder = new TextEncoder();
 const crypto = new Crypto();
 export default function encrypt({ data, recipients, }) {
