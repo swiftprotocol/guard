@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Crypto } from '@peculiar/webcrypto';
 import { TextEncoder } from 'text-encoding';
-const textEncoder = new TextEncoder();
-const crypto = new Crypto();
 export default function encrypt({ data, recipients, }) {
     return __awaiter(this, void 0, void 0, function* () {
+        const textEncoder = new TextEncoder();
+        const crypto = new Crypto();
         // Generate an RSA-OAEP key pair
         const keyPair = yield crypto.subtle.generateKey({
             name: 'RSA-OAEP',

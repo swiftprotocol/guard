@@ -1,8 +1,8 @@
 import { Crypto } from '@peculiar/webcrypto'
 
-const crypto = new Crypto()
-
 export default async function generateKeyPair() {
+  const crypto = new Crypto()
+
   const keyPair = await crypto.subtle.generateKey(
     {
       name: 'RSA-OAEP',

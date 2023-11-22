@@ -1,11 +1,11 @@
 import { Crypto } from '@peculiar/webcrypto'
 
-const crypto = new Crypto()
-
 export default async function signMessage(
   privateKeyHex: string,
   message: string
 ) {
+  const crypto = new Crypto()
+
   const privateKeyBuffer = Buffer.from(privateKeyHex, 'hex')
 
   const privateKey = await crypto.subtle.importKey(

@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Crypto } from '@peculiar/webcrypto';
 import { TextDecoder } from 'text-encoding';
-const textDecoder = new TextDecoder();
-const crypto = new Crypto();
 export default function decrypt({ symmetricKey, cipherText, recipientPrivateKey, }) {
     return __awaiter(this, void 0, void 0, function* () {
+        const textDecoder = new TextDecoder();
+        const crypto = new Crypto();
         // Import the recipient's private key
         const recipientPrivateKeyBuffer = Buffer.from(recipientPrivateKey, 'hex');
         const importedPrivateKey = yield crypto.subtle.importKey('pkcs8', recipientPrivateKeyBuffer, {

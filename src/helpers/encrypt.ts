@@ -3,13 +3,13 @@ import type { EncryptParams, EncryptResult } from '../types/encryption.js'
 import { Crypto } from '@peculiar/webcrypto'
 import { TextEncoder } from 'text-encoding'
 
-const textEncoder = new TextEncoder()
-const crypto = new Crypto()
-
 export default async function encrypt({
   data,
   recipients,
 }: EncryptParams): Promise<EncryptResult> {
+  const textEncoder = new TextEncoder()
+  const crypto = new Crypto()
+
   // Generate an RSA-OAEP key pair
   const keyPair = await crypto.subtle.generateKey(
     {
