@@ -16,7 +16,7 @@ export default function encrypt({ data, recipients, }) {
         // Generate an RSA-OAEP key pair
         const keyPair = yield crypto.subtle.generateKey({
             name: 'RSA-OAEP',
-            modulusLength: 2048,
+            modulusLength: 1024,
             publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
             hash: 'SHA-256',
         }, true, ['encrypt', 'decrypt']);
