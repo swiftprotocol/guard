@@ -4,7 +4,7 @@ export default async function signMessage(
   privateKeyHex: string,
   message: string
 ) {
-  const crypto = new Crypto()
+  const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto()
 
   const privateKeyBuffer = Buffer.from(privateKeyHex, 'hex')
 

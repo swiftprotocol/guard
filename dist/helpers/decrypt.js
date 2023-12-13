@@ -12,7 +12,7 @@ import { TextDecoder } from 'text-encoding';
 export default function decrypt({ symmetricKey, cipherText, recipientPrivateKey, }) {
     return __awaiter(this, void 0, void 0, function* () {
         const textDecoder = new TextDecoder();
-        const crypto = new Crypto();
+        const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto();
         // Import the recipient's private key
         const recipientPrivateKeyBuffer = Buffer.from(recipientPrivateKey, 'hex');
         const importedPrivateKey = yield crypto.subtle.importKey('pkcs8', recipientPrivateKeyBuffer, {

@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Crypto } from '@peculiar/webcrypto';
 export default function signMessage(privateKeyHex, message) {
     return __awaiter(this, void 0, void 0, function* () {
-        const crypto = new Crypto();
+        const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto();
         const privateKeyBuffer = Buffer.from(privateKeyHex, 'hex');
         const privateKey = yield crypto.subtle.importKey('pkcs8', privateKeyBuffer, {
             name: 'RSASSA-PKCS1-v1_5',

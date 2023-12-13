@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Crypto } from '@peculiar/webcrypto';
 export default function generateKeyPair() {
     return __awaiter(this, void 0, void 0, function* () {
-        const crypto = new Crypto();
+        const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto();
         const keyPair = yield crypto.subtle.generateKey({
             name: 'RSA-OAEP',
             modulusLength: 1024,

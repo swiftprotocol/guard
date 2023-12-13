@@ -9,7 +9,7 @@ export default async function decrypt({
   recipientPrivateKey,
 }: DecryptParams): Promise<string> {
   const textDecoder = new TextDecoder()
-  const crypto = new Crypto()
+  const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto()
 
   // Import the recipient's private key
   const recipientPrivateKeyBuffer = Buffer.from(recipientPrivateKey, 'hex')

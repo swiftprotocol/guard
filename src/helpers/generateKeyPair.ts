@@ -1,7 +1,7 @@
 import { Crypto } from '@peculiar/webcrypto'
 
 export default async function generateKeyPair() {
-  const crypto = new Crypto()
+  const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto()
 
   const keyPair = await crypto.subtle.generateKey(
     {

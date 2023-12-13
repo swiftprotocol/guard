@@ -12,7 +12,7 @@ import { TextEncoder } from 'text-encoding';
 export default function encrypt({ data, recipients, }) {
     return __awaiter(this, void 0, void 0, function* () {
         const textEncoder = new TextEncoder();
-        const crypto = new Crypto();
+        const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto();
         // Generate an RSA-OAEP key pair
         const keyPair = yield crypto.subtle.generateKey({
             name: 'RSA-OAEP',

@@ -8,7 +8,7 @@ export default async function encrypt({
   recipients,
 }: EncryptParams): Promise<EncryptResult> {
   const textEncoder = new TextEncoder()
-  const crypto = new Crypto()
+  const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto()
 
   // Generate an RSA-OAEP key pair
   const keyPair = await crypto.subtle.generateKey(
