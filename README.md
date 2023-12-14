@@ -9,7 +9,7 @@
 ## Installation
 
 ```zsh
-yarn add @swiftprotocol/guard
+yarn add @swiftprotocol/guard-v1
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ yarn add @swiftprotocol/guard
 To begin using Guard, you'll need an RSA key pair with encryption and decryption capabilities. Swift services store these keypairs in [Webauthn passkeys](https://webauthn.io/), but we do provide a `generateKeyPair` helper you can use for testing.
 
 ```javascript
-import Guard, { generateKeyPair } from '@swiftprotocol/guard'
+import Guard, { generateKeyPair } from '@swiftprotocol/guard-v1'
 
 const { publicKeyHex, privateKeyHex } = generateKeyPair()
 const guard = new Guard(publicKeyHex, privateKeyHex)
