@@ -12,31 +12,31 @@ export default class Data {
     constructor(api) {
         this.api = api;
     }
-    get({ address, key, pubkey, namespace, }) {
+    getAuthorizations({ pubkey }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield axios.post(this.api + '/data/get', {
-                address,
-                key,
+            return yield axios.post(this.api + '/notify/auth/get', {
                 pubkey,
-                namespace,
             });
         });
     }
-    set({ signature, pubkey, key, symmetricKeys, cipherText, namespace, }) {
+    setAuthorizations({ pubkey, authorizations, signature, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield axios.post(this.api + '/data/set', {
-                signature,
+            return yield axios.post(this.api + '/notify/auth/set', {
                 pubkey,
-                key,
-                symmetricKeys,
-                cipherText,
-                namespace,
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                authorizations,
+                signature,
+            });
+        });
+    }
+    subscribe({ app, pubkey, signature, subscription, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield axios.post(this.api + '/notify/subscribe', {
+                app,
+                pubkey,
+                signature,
+                subscription,
             });
         });
     }
 }
-//# sourceMappingURL=data.js.map
+//# sourceMappingURL=notify.js.map

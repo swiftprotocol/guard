@@ -18,9 +18,9 @@ export default class Data {
         pubkey: string;
         namespace?: string;
     }): Promise<import("axios").AxiosResponse<ErrorResponse | GetResponse, any>>;
-    set({ signature, publicKey, key, symmetricKeys, cipherText, namespace, }: {
+    set({ signature, pubkey, key, symmetricKeys, cipherText, namespace, }: {
         signature: string;
-        publicKey: string;
+        pubkey: string;
         key: string;
         symmetricKeys: SymmKey[];
         cipherText: string;

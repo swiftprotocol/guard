@@ -8,7 +8,7 @@ export default async function set(
   value: string,
   recipients: string[],
   signature: string,
-  publicKey: string,
+  publicKeyHex: string,
   namespace?: string
 ): Promise<void> {
   const { symmetricKeys, cipherText } = await encrypt({
@@ -18,7 +18,7 @@ export default async function set(
 
   const response = await this.Data.set({
     signature,
-    publicKey,
+    pubkey: publicKeyHex,
     key,
     symmetricKeys,
     cipherText,

@@ -7,23 +7,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import encrypt from '../helpers/encrypt.js';
-export default function set(key, value, recipients, signature, publicKeyHex, namespace) {
+export default function notifyRevoke(app, signature) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { symmetricKeys, cipherText } = yield encrypt({
-            data: value,
-            recipients,
-        });
-        const response = yield this.Data.set({
-            signature,
-            pubkey: publicKeyHex,
-            key,
-            symmetricKeys,
-            cipherText,
-            namespace,
+        const response = yield this.Notify.getAuthorizations({
+            pubkey: this.publicKey,
         });
         if (response.status === 200) {
-            return;
+            const { authorizations: currentAuthorizations } = response.data;
+            const authorizations = currentAuthorizations.filter((authorization) => !authorization.includes(app));
+            const newResponse = yield this.Notify.setAuthorizations({
+                signature,
+                pubkey: this.publicKey,
+                authorizations,
+            });
+            if (newResponse.status === 200) {
+                return;
+            }
+            else {
+                const errorResponse = newResponse.data;
+                throw new Error(`/notify/setAuthorizations returned ${newResponse.status} status with error: ${errorResponse.error}`);
+            }
         }
         else {
             const errorResponse = response.data;
@@ -31,4 +34,4 @@ export default function set(key, value, recipients, signature, publicKeyHex, nam
         }
     });
 }
-//# sourceMappingURL=set.js.map
+//# sourceMappingURL=notifyRevoke.js.map

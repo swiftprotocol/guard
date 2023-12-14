@@ -1,8 +1,15 @@
 import { fromBech32 } from '@cosmjs/encoding'
-import { Data, Passkeys, Webauthn } from './api/index.js'
+import { Data, Notify, Passkeys, Webauthn } from './api/index.js'
 import { API_URL } from './constants.js'
-import { authorize, get, revoke, set } from './functions/index.js'
+import {
+  authorize,
+  get,
+  notifyAuthorize,
+  revoke,
+  set,
+} from './functions/index.js'
 import signMessage from './helpers/signMessage.js'
+import { NotificationType } from './types/notify.js'
 
 export * from './helpers/index.js'
 
@@ -16,6 +23,7 @@ export default class Guard {
   public Data: Data
   public Passkeys: Passkeys
   public Webauthn: Webauthn
+  public Notify: Notify
 
   constructor(
     publicKeyHex: string,
@@ -32,6 +40,7 @@ export default class Guard {
     this.Data = new Data(this.api)
     this.Passkeys = new Passkeys(this.api)
     this.Webauthn = new Webauthn(this.api)
+    this.Notify = new Notify(this.api)
   }
 
   public async get(address: string, key: string): Promise<string> {
@@ -78,5 +87,25 @@ export default class Guard {
       this.privateKey,
       this.namespace
     )
+  }
+
+  public async notifyAuthorize(
+    address: string,
+    app: string,
+    notificationTypes: NotificationType[]
+  ) {
+    const rawAddress = fromBech32(address).data
+    const hexAddress = Buffer.from(rawAddress).toString('hex')
+    const signature = await signMessage(this.privateKey, hexAddress)
+
+    return await notifyAuthorize.call(this, app, notificationTypes, signature)
+  }
+
+  public async notifyRevoke(address: string, app: string) {
+    const rawAddress = fromBech32(address).data
+    const hexAddress = Buffer.from(rawAddress).toString('hex')
+    const signature = await signMessage(this.privateKey, hexAddress)
+
+    return await notifyAuthorize.call(this, app, signature)
   }
 }

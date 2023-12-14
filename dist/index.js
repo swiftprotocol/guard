@@ -8,9 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { fromBech32 } from '@cosmjs/encoding';
-import { Data, Passkeys, Webauthn } from './api/index.js';
+import { Data, Notify, Passkeys, Webauthn } from './api/index.js';
 import { API_URL } from './constants.js';
-import { authorize, get, revoke, set } from './functions/index.js';
+import { authorize, get, notifyAuthorize, revoke, set, } from './functions/index.js';
 import signMessage from './helpers/signMessage.js';
 export * from './helpers/index.js';
 export default class Guard {
@@ -23,6 +23,7 @@ export default class Guard {
         this.Data = new Data(this.api);
         this.Passkeys = new Passkeys(this.api);
         this.Webauthn = new Webauthn(this.api);
+        this.Notify = new Notify(this.api);
     }
     get(address, key) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -45,6 +46,22 @@ export default class Guard {
     revoke(address, key, recipient) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield revoke.call(this, address, key, recipient, this.privateKey, this.namespace);
+        });
+    }
+    notifyAuthorize(address, app, notificationTypes) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawAddress = fromBech32(address).data;
+            const hexAddress = Buffer.from(rawAddress).toString('hex');
+            const signature = yield signMessage(this.privateKey, hexAddress);
+            return yield notifyAuthorize.call(this, app, notificationTypes, signature);
+        });
+    }
+    notifyRevoke(address, app) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rawAddress = fromBech32(address).data;
+            const hexAddress = Buffer.from(rawAddress).toString('hex');
+            const signature = yield signMessage(this.privateKey, hexAddress);
+            return yield notifyAuthorize.call(this, app, signature);
         });
     }
 }

@@ -38,7 +38,7 @@ export default function revoke(address, key, recipient, privateKeyHex, namespace
             const signature = yield signMessage(privateKeyHex, hexAddress);
             const newResponse = yield this.Data.set({
                 signature,
-                publicKey: this.publicKey,
+                pubkey: this.publicKey,
                 key,
                 symmetricKeys,
                 cipherText: newCipherText,

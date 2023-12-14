@@ -44,14 +44,14 @@ export default class Data {
 
   public async set({
     signature,
-    publicKey,
+    pubkey,
     key,
     symmetricKeys,
     cipherText,
     namespace,
   }: {
     signature: string
-    publicKey: string
+    pubkey: string
     key: string
     symmetricKeys: SymmKey[]
     cipherText: string
@@ -61,7 +61,7 @@ export default class Data {
       this.api + '/data/set',
       {
         signature,
-        publicKey,
+        pubkey,
         key,
         symmetricKeys,
         cipherText,

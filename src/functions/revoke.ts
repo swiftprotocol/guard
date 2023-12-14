@@ -49,7 +49,7 @@ export default async function revoke(
 
     const newResponse = await this.Data.set({
       signature,
-      publicKey: this.publicKey,
+      pubkey: this.publicKey,
       key,
       symmetricKeys,
       cipherText: newCipherText,

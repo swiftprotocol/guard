@@ -47,7 +47,7 @@ export default async function authorize(
 
     const newResponse = await this.Data.set({
       signature,
-      publicKey: this.publicKey,
+      pubkey: this.publicKey,
       key,
       symmetricKeys,
       cipherText: newCipherText,
