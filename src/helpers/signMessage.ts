@@ -1,4 +1,5 @@
 import { Crypto } from '@peculiar/webcrypto'
+import Encoding from 'text-encoding'
 
 export default async function signMessage(
   privateKeyHex: string,
@@ -19,7 +20,7 @@ export default async function signMessage(
     ['sign']
   )
 
-  const encoder = new TextEncoder()
+  const encoder = new Encoding.TextEncoder()
   const messageBuffer = encoder.encode(message)
 
   const signatureBuffer = await crypto.subtle.sign(

@@ -1,13 +1,13 @@
 import type { EncryptParams, EncryptResult } from '../types/encryption.js'
 
 import { Crypto } from '@peculiar/webcrypto'
-import { TextEncoder } from 'text-encoding'
+import Encoding from 'text-encoding'
 
 export default async function encrypt({
   data,
   recipients,
 }: EncryptParams): Promise<EncryptResult> {
-  const textEncoder = new TextEncoder()
+  const textEncoder = new Encoding.TextEncoder()
   const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto()
 
   // Generate an RSA-OAEP key pair

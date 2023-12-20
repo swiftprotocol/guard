@@ -8,10 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Crypto } from '@peculiar/webcrypto';
-import { TextDecoder } from 'text-encoding';
+import Encoding from 'text-encoding';
 export default function decrypt({ symmetricKey, cipherText, recipientPrivateKey, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const textDecoder = new TextDecoder();
+        const textDecoder = new Encoding.TextDecoder();
         const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto();
         // Import the recipient's private key
         const recipientPrivateKeyBuffer = Buffer.from(recipientPrivateKey, 'hex');

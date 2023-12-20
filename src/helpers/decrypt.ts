@@ -1,14 +1,14 @@
 import type { DecryptParams } from '../types/encryption.js'
 
 import { Crypto } from '@peculiar/webcrypto'
-import { TextDecoder } from 'text-encoding'
+import Encoding from 'text-encoding'
 
 export default async function decrypt({
   symmetricKey,
   cipherText,
   recipientPrivateKey,
 }: DecryptParams): Promise<string> {
-  const textDecoder = new TextDecoder()
+  const textDecoder = new Encoding.TextDecoder()
   const crypto = typeof window !== 'undefined' ? window.crypto : new Crypto()
 
   // Import the recipient's private key
