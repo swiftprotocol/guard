@@ -1,6 +1,7 @@
 {
   "name": "@swiftprotocol/guard-v1",
-  "version": "0.0.2-alpha01",
+  "version": "0.0.2-alpha02",
+  "type": "module",
   "description": "Lightweight Swift Protocol Guard client.",
   "main": "index.js",
   "types": "index.d.ts",
